@@ -1,5 +1,6 @@
 import {h, Component} from 'preact';
-import {SecretEntry} from "../models/index";
+import {SecretEntry} from "../models";
+import {List, ListItem} from './list';
 
 export interface SecretsFrameProps {
     doUpdateSecretList: () => void,
@@ -13,7 +14,13 @@ export default class SecretsFrame extends Component<SecretsFrameProps, any> {
 
     render(props) {
         return (
-            <div>Bla</div>
+            <List>
+                {this.props.secretEntries.map(entry => (
+                    <ListItem active={false}>
+                        {entry.name}
+                    </ListItem>
+                ))}
+            </List>
         )
     }
 }

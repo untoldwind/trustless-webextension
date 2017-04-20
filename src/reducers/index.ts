@@ -1,6 +1,14 @@
-import {UPDATE_STATUS, UPDATE_IDENTITIES, UPDATE_SECRETLIST} from '../actions';
-import {handleActions, Action} from 'redux-actions';
-import {Identity, SecretList, SecretEntry, Status} from '../models';
+import {OtherAction, UPDATE_IDENTITIES, UPDATE_SECRETLIST, UPDATE_STATUS} from "../actions";
+import {Identity, SecretEntry} from "../models";
+import {UpdateStatusAction} from "../actions/status";
+import {UpdateIdentitiesAction} from "../actions/identities";
+import {UpdateSecretListAction} from "../actions/list";
+
+type Action =
+    UpdateStatusAction |
+    UpdateIdentitiesAction |
+    UpdateSecretListAction |
+    OtherAction;
 
 export interface State {
     initializing: boolean,
@@ -10,39 +18,34 @@ export interface State {
     secretEntries: SecretEntry[]
 }
 
-const reducers = handleActions<State>({
-    [UPDATE_STATUS]: (state: State, action: Action<Status>) => {
-        console.log("Updating");
-        console.log(action.payload);
-        return {
-            ...state,
-            initializing: false,
-            locked: action.payload.locked
-        };
-    },
-    [UPDATE_IDENTITIES]: (state: State, action: Action<Identity>) => {
-        console.log("Updating1");
-        console.log(action.payload);
-        return {
-            ...state,
-            identities: action.payload
-        };
-    },
-    [UPDATE_SECRETLIST]: (state: State, action: Action<SecretList>) => {
-        console.log("Updating2");
-        console.log(action.payload);
-        return {
-            ...state,
-            allTags: action.payload.all_tags,
-            secretEntries: action.payload.entries
-        }
-    }
-}, {
+export const INITIAL_STATE = {
     initializing: true,
     locked: true,
     identities: [],
     allTags: [],
     secretEntries: []
-});
+};
 
-export default reducers;
+export default function (state: State = INITIAL_STATE, action: Action = OtherAction): State {
+    switch (action.type) {
+        case UPDATE_STATUS:
+            return {
+                ...state,
+                initializing: false,
+                locked: action.status.locked
+            };
+        case UPDATE_IDENTITIES:
+            return {
+                ...state,
+                identities: action.identities
+            };
+        case UPDATE_SECRETLIST:
+            return {
+                ...state,
+                allTags: action.list.all_tags,
+                secretEntries: action.list.entries
+            };
+        default:
+            return state;
+    }
+}
