@@ -33,5 +33,31 @@ declare namespace browser.events {
 
 declare namespace browser.tabs {
     interface Tab {
+      title?: string;
+
+      url?: string;
     }
+
+    interface QueryInfo {
+        status?: string;
+        active?: boolean;
+        url?: string | string[];
+        currentWindow?: boolean;
+        windowId?: number;
+    }
+
+    export function query(queryInfo: QueryInfo, callback: (result: Tab[]) => void): void;
+
+    export function getCurrent(callback: (tab?: Tab) => void): void;
+}
+
+declare namespace browser.windows {
+    interface Window {
+        tabs?: chrome.tabs.Tab[];
+        id: number;
+    }
+
+    var WINDOW_ID_CURRENT: number;
+
+    export function getCurrent(callback: (window: Window) => void): void;
 }

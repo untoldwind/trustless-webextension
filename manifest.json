@@ -20,5 +20,5 @@
         "default_title": "Trustless",
         "default_popup": "dist/popup.html"
     },
-    "permissions": ["nativeMessaging"]
+    "permissions": ["nativeMessaging", "tabs"]
 }

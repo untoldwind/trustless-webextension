@@ -16,6 +16,7 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "@types/classnames": "0.0.32",
     "@types/redux-actions": "^1.2.3",
     "css-loader": "^0.28.0",
     "extract-loader": "^0.1.0",
