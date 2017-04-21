@@ -13,9 +13,21 @@ declare namespace browser.runtime {
     interface PortMessageEvent extends browser.events.Event<(message: Object, port: Port) => void> {
     }
 
+    interface MessageSender {}
+
+    interface ExtensionMessageEvent extends browser.events.Event<(message: any, sender: MessageSender, sendResponse: (response: any) => void) => void> {}
+
+    interface ExtensionConnectEvent extends browser.events.Event<(port: Port) => void> {}
+
     export function connectNative(application: string): Port;
 
+    export function sendMessage(message: any, responseCallback?: (response: any) => void): void;
+
     export function sendNativeMessage(application: string, message: Object, responseCallback?: (response: any) => void): void;
+
+    var onConnect: ExtensionConnectEvent;
+
+    var onMessage: ExtensionMessageEvent;
 }
 
 declare namespace browser.browserAction {
@@ -33,9 +45,10 @@ declare namespace browser.events {
 
 declare namespace browser.tabs {
     interface Tab {
-      title?: string;
-
-      url?: string;
+        id?: number;
+        title?: string;
+        url?: string;
+        active: boolean;
     }
 
     interface QueryInfo {
@@ -46,14 +59,37 @@ declare namespace browser.tabs {
         windowId?: number;
     }
 
+    interface InjectDetails {
+        allFrames?: boolean;
+        code?: string;
+        runAt?: string;
+        file?: string;
+        frameId?: number;
+        matchAboutBlank?: boolean;
+    }
+
+    interface ConnectInfo {
+        name?: string;
+        frameId?: number;
+    }
+
+
+    export function executeScript(details: InjectDetails, callback?: (result: any[]) => void): void;
+
+    export function executeScript(tabId: number, details: InjectDetails, callback?: (result: any[]) => void): void;
+
     export function query(queryInfo: QueryInfo, callback: (result: Tab[]) => void): void;
 
     export function getCurrent(callback: (tab?: Tab) => void): void;
+
+    export function sendMessage(tabId: number, message: any, responseCallback?: (response: any) => void): void;
+
+    export function connect(tabId: number, connectInfo?: ConnectInfo): runtime.Port;
 }
 
 declare namespace browser.windows {
     interface Window {
-        tabs?: chrome.tabs.Tab[];
+        tabs?: browser.tabs.Tab[];
         id: number;
     }
 

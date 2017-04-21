@@ -8,6 +8,7 @@ module.exports = {
         app: ['./src/app.scss'],
         background: ['./src/background.ts'],
         popup: ['./src/popup.tsx'],
+        "page-analyzer": ['./src/page-analyzer.ts'],
     },
     output: {
         path: path.join(__dirname, 'dist'),
