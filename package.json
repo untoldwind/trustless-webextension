@@ -3,7 +3,7 @@
   "scripts": {
     "build": "webpack --progress",
     "watch": "webpack --watch --progress",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist-firefox dist-chrome"
   },
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
@@ -16,8 +16,10 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "@types/chrome": "0.0.46",
     "@types/classnames": "0.0.32",
     "@types/redux-actions": "^1.2.3",
+    "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
     "extract-loader": "^0.1.0",
     "file-loader": "^0.11.1",

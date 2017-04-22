@@ -1,3 +1,5 @@
+declare const BROWSER: string
+
 declare namespace browser.runtime {
     interface Port {
         postMessage: (message: Object) => void;
@@ -13,11 +15,14 @@ declare namespace browser.runtime {
     interface PortMessageEvent extends browser.events.Event<(message: Object, port: Port) => void> {
     }
 
-    interface MessageSender {}
+    interface MessageSender {
+    }
 
-    interface ExtensionMessageEvent extends browser.events.Event<(message: any, sender: MessageSender, sendResponse: (response: any) => void) => void> {}
+    interface ExtensionMessageEvent extends browser.events.Event<(message: any, sender: MessageSender, sendResponse: (response: any) => void) => void> {
+    }
 
-    interface ExtensionConnectEvent extends browser.events.Event<(port: Port) => void> {}
+    interface ExtensionConnectEvent extends browser.events.Event<(port: Port) => void> {
+    }
 
     export function connectNative(application: string): Port;
 
@@ -25,16 +30,16 @@ declare namespace browser.runtime {
 
     export function sendNativeMessage(application: string, message: Object, responseCallback?: (response: any) => void): void;
 
-    var onConnect: ExtensionConnectEvent;
+    const onConnect: ExtensionConnectEvent;
 
-    var onMessage: ExtensionMessageEvent;
+    const onMessage: ExtensionMessageEvent;
 }
 
 declare namespace browser.browserAction {
     interface BrowserClickedEvent extends browser.events.Event<(tab: browser.tabs.Tab) => void> {
     }
 
-    var onClicked: BrowserClickedEvent;
+    const onClicked: BrowserClickedEvent;
 }
 
 declare namespace browser.events {
@@ -93,7 +98,7 @@ declare namespace browser.windows {
         id: number;
     }
 
-    var WINDOW_ID_CURRENT: number;
+    const WINDOW_ID_CURRENT: number;
 
     export function getCurrent(callback: (window: Window) => void): void;
 }

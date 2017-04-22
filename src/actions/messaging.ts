@@ -11,15 +11,22 @@ export interface Response<Res> {
     error?: string
 }
 
-export function createCommand<Args, Res>(command: string, args? : Args): Command<Args, Res> {
+export function createCommand<Args, Res>(command: string, args?: Args): Command<Args, Res> {
     return {
         command: command,
         args: args
     }
 }
 
-export function sendMessage<Args, Res>(command : Command<Args, Res>, handler : (Res) => void) {
-    browser.runtime.sendNativeMessage('trustless', command, (response: Response<Res>) => {
-        handler(response.response)
-    });
+export function sendMessage<Args, Res>(command: Command<Args, Res>, handler: (Res) => void) {
+    if(BROWSER === 'firefox') {
+        browser.runtime.sendNativeMessage('trustless', command, (response: Response<Res>) => {
+            handler(response.response)
+        });
+    }
+    if(BROWSER === 'chrome') {
+        chrome.runtime.sendNativeMessage('io.github.trustless', command, (response: Response<Res>) => {
+            handler(response.response)
+        });
+    }
 }

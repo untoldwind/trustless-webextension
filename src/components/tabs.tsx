@@ -4,7 +4,7 @@ import * as classNames from 'classnames';
 export interface NavLinkProps {
     title: string
     active: boolean
-    onSelected: (event:Event) => void
+    onSelected?: (event:Event) => void
 }
 
 export class NavLink extends Component<NavLinkProps, any> {
@@ -20,12 +20,12 @@ export class NavLink extends Component<NavLinkProps, any> {
 
 export interface TabsProps {
     activeIndex: number
-    onTabSeleced: (event:Event, index: number) => void
+    onTabSeleced?: (event:Event, index: number) => void
 }
 
 export class Tabs extends Component<TabsProps, any> {
     onSelected(index: number) : (event:Event) => void {
-        return (event:Event) => this.props.onTabSeleced(event, index)
+        return (event:Event) => this.props.onTabSeleced && this.props.onTabSeleced(event, index)
     }
 
     render() {
