@@ -24,7 +24,7 @@ function findLoginForm(): LoginForm {
     return undefined;
 }
 
-browser.runtime.onMessage.addListener((message: Messages, sender, sendResponse) => {
+function messageHandler(message: Messages, sender, sendResponse) {
     switch (message.type) {
         case CHECK_MESSAGE_TYPE:
             sendResponse({
@@ -48,4 +48,11 @@ browser.runtime.onMessage.addListener((message: Messages, sender, sendResponse) 
             }
             break;
     }
-});
+}
+
+if (BROWSER === 'firefox') {
+    browser.runtime.onMessage.addListener(messageHandler);
+}
+if (BROWSER === 'chrome') {
+    chrome.runtime.onMessage.addListener(messageHandler);
+}
