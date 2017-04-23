@@ -28,7 +28,8 @@ browser.runtime.onMessage.addListener((message: Messages, sender, sendResponse) 
     switch (message.type) {
         case CHECK_MESSAGE_TYPE:
             sendResponse({
-                found: typeof findLoginForm() !== 'undefined'
+                hasLoginForm: typeof findLoginForm() !== 'undefined',
+                url: window.location.href
             });
             break;
         case FILL_MESSAGE_TYPE:

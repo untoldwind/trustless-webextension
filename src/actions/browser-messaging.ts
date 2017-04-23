@@ -18,7 +18,7 @@ export function createCommand<Args, Res>(command: string, args?: Args): Command<
     }
 }
 
-export function sendMessage<Args, Res>(command: Command<Args, Res>, handler: (Res) => void) {
+export function sendNativeMessage<Args, Res>(command: Command<Args, Res>, handler: (Res) => void) {
     if(BROWSER === 'firefox') {
         browser.runtime.sendNativeMessage('trustless', command, (response: Response<Res>) => {
             handler(response.response)

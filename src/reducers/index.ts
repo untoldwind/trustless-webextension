@@ -1,13 +1,21 @@
-import {OtherAction, UPDATE_IDENTITIES, UPDATE_SECRETLIST, UPDATE_STATUS} from "../actions";
+import {
+    OtherAction,
+    UPDATE_IDENTITIES,
+    UPDATE_SECRETLIST,
+    UPDATE_STATUS,
+    INSTRUMENT_TAB,
+    UpdateStatusAction,
+    UpdateIdentitiesAction,
+    UpdateSecretListAction,
+    InstrumentTabAction
+} from "../actions";
 import {Identity, SecretEntry} from "../models";
-import {UpdateStatusAction} from "../actions/status";
-import {UpdateIdentitiesAction} from "../actions/identities";
-import {UpdateSecretListAction} from "../actions/list";
 
 type Action =
     UpdateStatusAction |
     UpdateIdentitiesAction |
     UpdateSecretListAction |
+    InstrumentTabAction |
     OtherAction;
 
 export interface State {
@@ -17,6 +25,9 @@ export interface State {
     filterMode: FilterMode,
     allTags: string[],
     secretEntries: SecretEntry[]
+    tabId?: number
+    instrumentedURL?: string
+    hasLoginForm?: boolean
 }
 
 export type FilterMode = 'MatchingUrl' | 'All';
@@ -51,6 +62,13 @@ export default function (state: State = INITIAL_STATE, action: Action = OtherAct
                 filterMode: action.filterMode,
                 allTags: action.list.all_tags,
                 secretEntries: action.list.entries
+            };
+        case INSTRUMENT_TAB:
+            return {
+                ...state,
+                instrumentedURL: action.instrumentedURL,
+                hasLoginForm: action.hasLoginForm,
+                tabId: action.tabId
             };
         default:
             return state;

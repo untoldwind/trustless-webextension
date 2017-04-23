@@ -6,7 +6,8 @@ export type CheckMessage = {
 }
 
 export type CheckResponse = {
-    found: boolean
+    hasLoginForm: boolean
+    url: string
 }
 
 export type FILL_MESSAGE_TYPE = 'FILL_MESSAGE_TYPE';

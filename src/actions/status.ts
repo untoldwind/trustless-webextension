@@ -1,7 +1,7 @@
 import {Status} from "../models";
 import {Dispatch} from "redux";
 import {State} from "../reducers";
-import {createCommand, sendMessage} from "./messaging";
+import {createCommand, sendNativeMessage} from "./browser-messaging";
 
 export type UPDATE_STATUS = 'UPDATE_STATUS';
 export const UPDATE_STATUS: UPDATE_STATUS = 'UPDATE_STATUS';
@@ -20,7 +20,7 @@ export function updateStatus(status: Status): UpdateStatusAction {
 
 export function doUpdateStatus() {
     return (dispatch: Dispatch<State>) => {
-        sendMessage(createCommand('status'), (response: Status) => {
+        sendNativeMessage(createCommand('status'), (response: Status) => {
             dispatch(updateStatus(response));
         });
     };

@@ -1,7 +1,7 @@
 import {Identity} from "../models";
 import {Dispatch} from "redux";
 import {State} from "../reducers";
-import {createCommand, sendMessage} from "./messaging";
+import {createCommand, sendNativeMessage} from "./browser-messaging";
 
 export type UPDATE_IDENTITIES = 'UPDATE_IDENTITIES';
 export const UPDATE_IDENTITIES: UPDATE_IDENTITIES = 'UPDATE_IDENTITIES';
@@ -20,7 +20,7 @@ function updateIdentities(identities: Identity[]): UpdateIdentitiesAction {
 
 export function doUpdateIdentities() {
     return (dispatch: Dispatch<State>) => {
-        sendMessage(createCommand('identities'), (response: Identity[]) => {
+        sendNativeMessage(createCommand('identities'), (response: Identity[]) => {
             dispatch(updateIdentities(response));
         });
     }

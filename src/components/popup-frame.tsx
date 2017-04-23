@@ -32,7 +32,8 @@ export default class PopupFrame extends Component<any, any> {
             <Container fluid={true}>
                 <SecretsFrame secretEntries={props.secretEntries}
                               filterMode={props.filterMode}
-                              doUpdateSecretList={props.doUpdateSecretList}/>
+                              doUpdateSecretList={props.doUpdateSecretList}
+                              doFillLoginForm={props.doFillLoginForm}/>
             </Container>
         )
     }

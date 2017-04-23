@@ -1,12 +1,12 @@
 import {Status, Identity} from '../models';
 import {Dispatch} from 'redux';
 import {State} from '../reducers';
-import {sendMessage, createCommand} from './messaging';
+import {sendNativeMessage, createCommand} from './browser-messaging';
 import {updateStatus} from './status';
 
 export function doLock() {
     return (dispatch: Dispatch<State>) => {
-        sendMessage(createCommand('lock'), (response: Status) => {
+        sendNativeMessage(createCommand('lock'), (response: Status) => {
             dispatch(updateStatus(response));
         })
     };
@@ -19,7 +19,7 @@ export function doUnlock(identitiy: Identity, passphrase:string) {
     });
 
     return (dispatch: Dispatch<State>) => {
-        sendMessage(command, (response: Status) => {
+        sendNativeMessage(command, (response: Status) => {
             dispatch(updateStatus(response));
         })
     };

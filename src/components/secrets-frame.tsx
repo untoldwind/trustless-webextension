@@ -1,6 +1,7 @@
 import {h, Component} from 'preact';
 import {SecretEntry} from "../models";
 import {List, ListItem} from './list';
+import Jumbotron from './jumbotron';
 import {Tabs, Tab} from './tabs';
 import {bind} from 'decko';
 import {FilterMode, FilterModeAll, FilterModeMatchingUrl} from "../reducers/index";
@@ -8,14 +9,28 @@ import Filter = chrome.sessions.Filter;
 
 export interface SecretEntriesListProps {
     entries: SecretEntry[]
+    doFillLoginForm: (entry: SecretEntry) => void
 }
 
 export class SecretEntriesList extends Component<SecretEntriesListProps, any> {
+    onSecretEntryFill(entry: SecretEntry): (Event) => void {
+        return () => {
+            this.props.doFillLoginForm(entry);
+        }
+    }
+
     render() {
+        if (this.props.entries.length === 0) {
+            return (
+                <Jumbotron>
+                    <h1>No matches</h1>
+                </Jumbotron>
+            )
+        }
         return (
             <List>
                 {this.props.entries.map(entry => (
-                    <ListItem active={false}>
+                    <ListItem active={false} onClick={this.onSecretEntryFill(entry)}>
                         {entry.name}
                     </ListItem>
                 ))}
@@ -26,6 +41,7 @@ export class SecretEntriesList extends Component<SecretEntriesListProps, any> {
 
 export interface SecretsFrameProps {
     doUpdateSecretList: (filterMode: FilterMode) => void
+    doFillLoginForm: (entry: SecretEntry) => void
     secretEntries: SecretEntry[]
     filterMode: FilterMode
 }
@@ -47,7 +63,7 @@ export default class SecretsFrame extends Component<SecretsFrameProps, any> {
         }
     }
 
-    render(props) {
+    render() {
         let index = 0;
 
         switch (this.props.filterMode) {
@@ -61,10 +77,10 @@ export default class SecretsFrame extends Component<SecretsFrameProps, any> {
         return (
             <Tabs activeIndex={index} onTabSeleced={this.onTabSelected}>
                 <Tab title="Matching">
-                    <SecretEntriesList entries={this.props.secretEntries}/>
+                    <SecretEntriesList entries={this.props.secretEntries} doFillLoginForm={this.props.doFillLoginForm}/>
                 </Tab>
                 <Tab title="All">
-                    <SecretEntriesList entries={this.props.secretEntries}/>
+                    <SecretEntriesList entries={this.props.secretEntries} doFillLoginForm={this.props.doFillLoginForm}/>
                 </Tab>
             </Tabs>
         )
