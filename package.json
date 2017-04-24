@@ -3,7 +3,9 @@
   "scripts": {
     "build": "webpack --progress",
     "watch": "webpack --watch --progress",
-    "clean": "rimraf dist-firefox dist-chrome"
+    "clean": "rimraf dist-firefox dist-chrome",
+    "package:chrome": "chromium --pack-extension=dist-chrome --pack-extension-key=dist-chrome.pem",
+    "package:firefox": "web-ext -s dist-firefox sign --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET"
   },
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",

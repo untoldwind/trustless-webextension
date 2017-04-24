@@ -1,4 +1,6 @@
 node_modules/
 dist-firefox/
 dist-chrome/
+dist-chrome.pem
+web-ext-artifacts/
 .idea/
