@@ -14,7 +14,7 @@ function findLoginForm(): LoginForm {
         const prev = inputs[i - 1];
         const input = inputs[i];
 
-        if (input.type === 'password' && prev.type === 'text') {
+        if (input.type === 'password' && (prev.type === 'text' || prev.type === 'email')) {
             return {
                 username: <HTMLInputElement>prev,
                 password: <HTMLInputElement>input
