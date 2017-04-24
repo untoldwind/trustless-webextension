@@ -10,13 +10,16 @@ interface LoginForm {
 function findLoginForm(): LoginForm {
     const inputs = document.getElementsByTagName("input");
 
-    for (let i = 1; i < inputs.length; i++) {
-        const prev = inputs[i - 1];
+    let userInput: HTMLInputElement;
+
+    for (let i = 0; i < inputs.length; i++) {
         const input = inputs[i];
 
-        if (input.type === 'password' && (prev.type === 'text' || prev.type === 'email')) {
+        if (input.type === 'text' || input.type === 'email') {
+            userInput = <HTMLInputElement>input;
+        } else if (input.type === 'password' && typeof userInput !== 'undefined') {
             return {
-                username: <HTMLInputElement>prev,
+                username: userInput,
                 password: <HTMLInputElement>input
             }
         }
@@ -35,7 +38,7 @@ function messageHandler(message: Messages, sender, sendResponse) {
         case FILL_MESSAGE_TYPE:
             const loginForm = findLoginForm();
 
-            if(typeof loginForm !== 'undefined') {
+            if (typeof loginForm !== 'undefined') {
                 loginForm.username.value = message.username;
                 loginForm.password.value = message.password;
                 sendResponse({
