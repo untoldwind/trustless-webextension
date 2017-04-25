@@ -12,9 +12,9 @@ export function doFillLoginForm(entry: SecretEntry) {
             return;
         }
 
-        sendNativeMessage(createCommand('get', {id: entry.id}), (response: Secret) => {
+        sendNativeMessage(createCommand('get', {id: entry.id})).then((response: Secret) => {
             console.log(response);
-            fillLoginForm(tabId, response.current.properties.username, response.current.properties.password, (success) => {
+            fillLoginForm(tabId, response.current.properties.username, response.current.properties.password).then((success) => {
                 console.log(success);
             });
         });

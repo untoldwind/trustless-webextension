@@ -28,7 +28,7 @@ declare namespace browser.runtime {
 
     export function sendMessage(message: any, responseCallback?: (response: any) => void): void;
 
-    export function sendNativeMessage(application: string, message: Object, responseCallback?: (response: any) => void): void;
+    export function sendNativeMessage(application: string, message: Object): Promise<any>;
 
     const onConnect: ExtensionConnectEvent;
 
@@ -81,13 +81,13 @@ declare namespace browser.tabs {
 
     export function executeScript(details: InjectDetails, callback?: (result: any[]) => void): void;
 
-    export function executeScript(tabId: number, details: InjectDetails, callback?: (result: any[]) => void): void;
+    export function executeScript(tabId: number, details: InjectDetails): Promise<any>;
 
-    export function query(queryInfo: QueryInfo, callback: (result: Tab[]) => void): void;
+    export function query(queryInfo: QueryInfo): Promise<Tab[]>;
 
     export function getCurrent(callback: (tab?: Tab) => void): void;
 
-    export function sendMessage(tabId: number, message: any, responseCallback?: (response: any) => void): void;
+    export function sendMessage(tabId: number, message: any): Promise<any>;
 
     export function connect(tabId: number, connectInfo?: ConnectInfo): runtime.Port;
 }

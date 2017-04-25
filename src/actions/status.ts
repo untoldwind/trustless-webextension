@@ -20,7 +20,7 @@ export function updateStatus(status: Status): UpdateStatusAction {
 
 export function doUpdateStatus() {
     return (dispatch: Dispatch<State>) => {
-        sendNativeMessage(createCommand('status'), (response: Status) => {
+        sendNativeMessage(createCommand('status')).then((response: Status) => {
             dispatch(updateStatus(response));
         });
     };

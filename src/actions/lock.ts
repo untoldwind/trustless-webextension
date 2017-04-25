@@ -6,20 +6,20 @@ import {updateStatus} from './status';
 
 export function doLock() {
     return (dispatch: Dispatch<State>) => {
-        sendNativeMessage(createCommand('lock'), (response: Status) => {
+        sendNativeMessage(createCommand('lock')).then((response: Status) => {
             dispatch(updateStatus(response));
         })
     };
 }
 
-export function doUnlock(identitiy: Identity, passphrase:string) {
+export function doUnlock(identitiy: Identity, passphrase: string) {
     const command = createCommand('unlock', {
         ...identitiy,
         passphrase: passphrase
     });
 
     return (dispatch: Dispatch<State>) => {
-        sendNativeMessage(command, (response: Status) => {
+        sendNativeMessage(command).then((response: Status) => {
             dispatch(updateStatus(response));
         })
     };

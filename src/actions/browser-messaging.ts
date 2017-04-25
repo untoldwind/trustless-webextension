@@ -18,15 +18,20 @@ export function createCommand<Args, Res>(command: string, args?: Args): Command<
     }
 }
 
-export function sendNativeMessage<Args, Res>(command: Command<Args, Res>, handler: (Res) => void) {
+export function sendNativeMessage<Args, Res>(command: Command<Args, Res>) : Promise<Res> {
     if(BROWSER === 'firefox') {
-        browser.runtime.sendNativeMessage('trustless', command, (response: Response<Res>) => {
-            handler(response.response)
-        });
+        return browser.runtime.sendNativeMessage('trustless', command).then(response => response.response);
     }
     if(BROWSER === 'chrome') {
-        chrome.runtime.sendNativeMessage('io.github.trustless', command, (response: Response<Res>) => {
-            handler(response.response)
+        return new Promise<Res>((resolve, reject) => {
+            chrome.runtime.sendNativeMessage('io.github.trustless', command, function (response: Response<Res>) {
+                if(arguments.length === 0) {
+                    reject(chrome.runtime.lastError);
+                } else {
+                    resolve(response.response);
+                }
+            });
         });
+
     }
 }

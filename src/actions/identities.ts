@@ -20,7 +20,7 @@ function updateIdentities(identities: Identity[]): UpdateIdentitiesAction {
 
 export function doUpdateIdentities() {
     return (dispatch: Dispatch<State>) => {
-        sendNativeMessage(createCommand('identities'), (response: Identity[]) => {
+        sendNativeMessage(createCommand('identities')).then((response: Identity[]) => {
             dispatch(updateIdentities(response));
         });
     }
