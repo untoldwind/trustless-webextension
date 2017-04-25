@@ -1,6 +1,8 @@
 import {h, Component} from 'preact';
 import PasswordField from './password-field';
 import SelectField from './select-field';
+import {SubmitButton} from './button';
+import {Row, Col} from './grid';
 import {bind} from 'decko';
 import linkState from 'linkstate';
 import {Identity} from '../models';
@@ -39,11 +41,11 @@ export default class UnlockFrame extends Component<UnlockFrameProps, UnlockFrame
     }
 
     @bind
-    submit(event:Event) {
+    submit(event: Event) {
         event.preventDefault();
         event.stopPropagation();
 
-        const selectedIdentity = this.props.identities.filter(identity => identity.email === this.state.identityEmail)
+        const selectedIdentity = this.props.identities.filter(identity => identity.email === this.state.identityEmail);
 
         if (selectedIdentity.length === 0) {
             return
@@ -62,8 +64,13 @@ export default class UnlockFrame extends Component<UnlockFrameProps, UnlockFrame
                                  value: identity.email,
                                  label: `${identity.name} <${identity.email}>`
                              }))}/>
-                <PasswordField name="passphrase" label="Passphrase"
+                <PasswordField name="passphrase" label="Passphrase" autofocus={true}
                                onInput={linkState(this, 'passphrase')}/>
+                <Row horizonalAlign="center">
+                    <Col  cols={4}>
+                        <SubmitButton type="danger" label="Unlock"/>
+                    </Col>
+                </Row>
             </form>
         )
     }
