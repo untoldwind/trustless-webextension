@@ -40,7 +40,9 @@ function messageHandler(message: Messages, sender, sendResponse) {
 
             if (typeof loginForm !== 'undefined') {
                 loginForm.username.value = message.username;
+                loginForm.username.dispatchEvent(new Event('change'));
                 loginForm.password.value = message.password;
+                loginForm.password.dispatchEvent(new Event('change'));
                 sendResponse({
                     filled: true
                 });
