@@ -4,7 +4,8 @@ import { returntypeof } from "../util/returntypeof";
 import { BoundActions, actionBinder } from "../actions/bindables";
 import { connect } from "react-redux";
 import { bind } from "decko";
-import { FormGroup, FormControl, Button } from "react-bootstrap";
+import { FormGroup, Button } from "reactstrap";
+import Input from "reactstrap/lib/Input";
 
 const mapStateToProps = (state: State) => ({
   identities: state.identities,
@@ -19,14 +20,13 @@ interface UnlockFrameState {
   identityEmail?: string
 }
 
- class UnlockFrameImpl extends React.Component<Props, UnlockFrameState> {
-  getInitialState() {
-    if (this.props.identities.length > 0) {
-      return {
-        identityEmail: this.props.identities[0].email,
-      }
-    }
-    return {}
+class UnlockFrameImpl extends React.Component<Props, UnlockFrameState> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = props.identities.length > 0 ? {
+      identityEmail: this.props.identities[0].email,
+    } : {};
   }
 
   componentDidMount() {
@@ -34,7 +34,7 @@ interface UnlockFrameState {
   }
 
   componentDidUpdate() {
-    if (this.props.identities.length > 0) {
+    if (this.props.identities.length > 0 && typeof this.state.identityEmail === "undefined") {
       this.setState({
         identityEmail: this.props.identities[0].email,
       })
@@ -56,14 +56,14 @@ interface UnlockFrameState {
   }
 
   @bind
-  onChangeIdentity(event: React.FormEvent<FormControl & HTMLSelectElement>) {
+  onChangeIdentity(event: React.FormEvent<HTMLInputElement>) {
     this.setState({
       identityEmail: event.currentTarget.value,
     })
   }
 
   @bind
-  onChangePassphrase(event: React.FormEvent<FormControl & HTMLInputElement>) {
+  onChangePassphrase(event: React.FormEvent<HTMLInputElement>) {
     this.setState({
       passphrase: event.currentTarget.value,
     })
@@ -73,15 +73,15 @@ interface UnlockFrameState {
     return (
       <form onSubmit={this.submit}>
         <FormGroup>
-          <FormControl componentClass="select" onChange={this.onChangeIdentity} value={this.state.identityEmail}>
+          <Input type="select" onChange={this.onChangeIdentity} value={this.state.identityEmail}>
             {this.props.identities.map(identity => (
               <option value={identity.email}>{identity.name}</option>
             ))}
-          </FormControl>
+          </Input>
         </FormGroup>
         <FormGroup>
-          <FormControl type="password" autoFocus={true} onInput={this.onChangePassphrase}/>
-          </FormGroup>
+          <Input type="password" autoFocus={true} onInput={this.onChangePassphrase} />
+        </FormGroup>
         <Button type="submit">Unlock</Button>
       </form>
     )

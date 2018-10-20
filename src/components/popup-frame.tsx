@@ -3,7 +3,7 @@ import { State } from "../reducers";
 import { returntypeof } from "../util/returntypeof";
 import { BoundActions, actionBinder } from "../actions/bindables";
 import { connect } from "react-redux";
-import { Grid, Row } from "react-bootstrap";
+import { Container, Row, Col } from "reactstrap";
 import { SecretsFrame } from "./secrets-frame";
 import { UnlockFrame } from "./unlock-frame";
 
@@ -26,24 +26,28 @@ class PopupFrameImpl extends React.Component<Props, {}> {
 
     if (initializing) {
       return (
-        <Grid />
+        <Container />
       )
     }
     if (locked) {
       return (
-        <Grid>
+        <Container>
           <Row>
-            <UnlockFrame />
+            <Col>
+              <UnlockFrame />
+            </Col>
           </Row>
-        </Grid>
+        </Container>
       )
     }
     return (
-      <Grid>
+      <Container>
         <Row>
-          <SecretsFrame />
+          <Col>
+            <SecretsFrame />
+          </Col>
         </Row>
-      </Grid>
+      </Container>
     )
   }
 }

@@ -4,3 +4,4 @@ dist-chrome/
 dist-chrome.pem
 web-ext-artifacts/
 .idea/
+*.log

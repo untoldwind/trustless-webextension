@@ -20,7 +20,7 @@ function findLoginForm(): LoginForm {
     } else if (input.type === 'password' && typeof userInput !== 'undefined') {
       return {
         username: userInput,
-        password: <HTMLInputElement>input
+        password: <HTMLInputElement>input,
       }
     }
   }
@@ -32,7 +32,7 @@ function messageHandler(message: Messages, sender, sendResponse) {
     case CHECK_MESSAGE_TYPE:
       sendResponse({
         hasLoginForm: typeof findLoginForm() !== 'undefined',
-        url: window.location.href
+        url: window.location.href,
       });
       break;
     case FILL_MESSAGE_TYPE:
@@ -44,11 +44,11 @@ function messageHandler(message: Messages, sender, sendResponse) {
         loginForm.password.value = message.password;
         loginForm.password.dispatchEvent(new Event('change'));
         sendResponse({
-          filled: true
+          filled: true,
         });
       } else {
         sendResponse({
-          filled: false
+          filled: false,
         });
       }
       break;

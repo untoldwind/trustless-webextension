@@ -6,41 +6,42 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const base = {
     devtool: 'source-map',
+
     entry: {
         app: ['./src/app.scss'],
         background: ['./src/background.ts'],
         popup: ['./src/popup.tsx'],
         "page-analyzer": ['./src/page-analyzer.ts'],
     },
+
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
     },
+
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
-                loaders: ['ts-loader'],
+                use: ['ts-loader'],
             }, {
                 test: /\.scss$/,
-                loaders: [
+                use: [
                     "file-loader?name=[name].css",
                     "extract-loader",
                     "css-loader",
-                    "resolve-url-loader",
                     "sass-loader?sourceMap",
                 ],
             }, {
                 test: /\.css$/,
-                loaders: [
+                use: [
                     "file-loader?name=[name].css",
                     "extract-loader",
                     "css-loader",
-                    "resolve-url-loader",
                 ],
             }, {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
-                loader: 'file-loader?name=[name].[ext]'
+                use: 'file-loader?name=[name].[ext]'
             }
         ]
     },

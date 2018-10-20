@@ -4,8 +4,16 @@ import { returntypeof } from "../util/returntypeof";
 import { BoundActions, actionBinder } from "../actions/bindables";
 import { connect } from "react-redux";
 import Filter = chrome.sessions.Filter;
+import { FilterModes, FilterMode } from "../models/filter-mode";
+import { Nav, NavItem, TabPane, NavLink, TabContent, Container, Row, Col } from "reactstrap";
+import { SecretEntriesList } from "./secrets-entries-list";
+import { bind } from "decko";
+import classnames from 'classnames';
 
-const mapStateToProps = (state: State) => (state);
+const mapStateToProps = (state: State) => ({
+  secretEntries: state.secretEntries,
+  filterMode: state.filterMode,
+});
 
 const stateProps = returntypeof(mapStateToProps);
 
@@ -13,41 +21,38 @@ export type Props = BoundActions & typeof stateProps;
 
 class SecretsFrameImpl extends React.Component<Props, any> {
   componentDidMount() {
-    this.props.doUpdateSecretList(FilterModeMatchingUrl);
+    this.props.doUpdateSecretList(FilterModes.MatchingUrl);
   }
 
   @bind
-  onTabSelected(event: Event, index: number) {
-    switch (index) {
-      case 0:
-        this.props.doUpdateSecretList(FilterModeMatchingUrl);
-        return;
-      case 1:
-        this.props.doUpdateSecretList(FilterModeAll);
-        return;
+  onTabSelected(filterMode: FilterMode): () => void {
+    return () => {
+      this.props.doUpdateSecretList(filterMode);
     }
   }
 
   render() {
-    let index = 0;
-
-    switch (this.props.filterMode) {
-      case FilterModeMatchingUrl:
-        index = 0;
-        break;
-      case FilterModeAll:
-        index = 1;
-        break;
-    }
+    const activeKey = this.props.filterMode === FilterModes.MatchingUrl ? 1 : 2;
     return (
-      <Tabs activeIndex={index} onTabSeleced={this.onTabSelected}>
-        <Tab title="Matching">
-          <SecretEntriesList entries={this.props.secretEntries} doFillLoginForm={this.props.doFillLoginForm} />
-        </Tab>
-        <Tab title="All">
-          <SecretEntriesList entries={this.props.secretEntries} doFillLoginForm={this.props.doFillLoginForm} />
-        </Tab>
-      </Tabs>
+      <div>
+        <Row>
+          <Col>
+            <Nav tabs>
+              <NavItem>
+                <NavLink className={classnames({ active: this.props.filterMode === FilterModes.MatchingUrl })} onClick={this.onTabSelected(FilterModes.MatchingUrl)}>Matching</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink className={classnames({ active: this.props.filterMode === FilterModes.All })} onClick={this.onTabSelected(FilterModes.All)}>All</NavLink>
+              </NavItem>
+            </Nav>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <SecretEntriesList />
+          </Col>
+        </Row>
+      </div>
     )
   }
 }

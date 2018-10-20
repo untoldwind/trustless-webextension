@@ -1,5 +1,6 @@
 import { Action, ActionCreators } from "../actions/action-creators";
 import { Identity, SecretEntry } from "../models";
+import { FilterModes, FilterMode } from "../models/filter-mode";
 
 export interface State {
   initializing: boolean,
@@ -13,20 +14,16 @@ export interface State {
   hasLoginForm?: boolean
 }
 
-export type FilterMode = 'MatchingUrl' | 'All';
-export const FilterModeMatchingUrl: FilterMode = 'MatchingUrl';
-export const FilterModeAll: FilterMode = 'All';
-
 export const INITIAL_STATE: State = {
   initializing: true,
   locked: true,
   identities: [],
-  filterMode: FilterModeMatchingUrl,
+  filterMode: FilterModes.MatchingUrl,
   allTags: [],
-  secretEntries: []
+  secretEntries: [],
 };
 
-export default function(state: State = INITIAL_STATE, action: Action): State {
+export function reducers(state: State = INITIAL_STATE, action: Action): State {
   switch (action.type) {
     case ActionCreators.updateStatus.type:
       return {

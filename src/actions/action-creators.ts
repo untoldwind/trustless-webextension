@@ -1,6 +1,6 @@
 import { ActionCreator } from "../util/action-creator";
 import { Status, SecretList, Identity } from "../models";
-import { FilterMode } from "../reducers";
+import { FilterMode } from "../models/filter-mode";
 
 export const ActionCreators = {
   updateSecretList: new ActionCreator<'UPDATE_SECRETLIST', { list: SecretList, filter: FilterMode }>('UPDATE_SECRETLIST'),
