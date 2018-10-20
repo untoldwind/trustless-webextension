@@ -1,14 +1,18 @@
-import {h, Component} from 'preact';
-import {connect} from 'preact-redux';
-import Container from './container';
+import * as React from "react";
 import UnlockFrame from './unlock-frame';
 import SecretsFrame from './secrets-frame';
 import * as actions from '../actions';
 import {bindActions} from '../util';
+import { State } from "../reducers";
+import { returntypeof } from "../util/returntypeof"
+
+const mapStateToProps = (state: State) => (state);
+  
+const stateProps = returntypeof(mapStateToProps);
 
 
 @connect(state => state, bindActions(actions))
-export default class PopupFrame extends Component<any, any> {
+export default class PopupFrame extends React.Component<any, any> {
     componentDidMount() {
         this.props.doUpdateStatus();
     }

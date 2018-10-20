@@ -34,7 +34,7 @@ export type FilterMode = 'MatchingUrl' | 'All';
 export const FilterModeMatchingUrl: FilterMode = 'MatchingUrl';
 export const FilterModeAll: FilterMode = 'All';
 
-export const INITIAL_STATE = {
+export const INITIAL_STATE : State = {
     initializing: true,
     locked: true,
     identities: [],
