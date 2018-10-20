@@ -1,44 +1,51 @@
 import * as React from "react";
-import UnlockFrame from './unlock-frame';
-import SecretsFrame from './secrets-frame';
-import * as actions from '../actions';
-import {bindActions} from '../util';
 import { State } from "../reducers";
-import { returntypeof } from "../util/returntypeof"
+import { returntypeof } from "../util/returntypeof";
+import { BoundActions, actionBinder } from "../actions/bindables";
+import { connect } from "react-redux";
+import { Grid, Row } from "react-bootstrap";
+import { SecretsFrame } from "./secrets-frame";
+import { UnlockFrame } from "./unlock-frame";
 
-const mapStateToProps = (state: State) => (state);
-  
+const mapStateToProps = (state: State) => ({
+  initializing: state.initializing,
+  locked: state.locked,
+});
+
 const stateProps = returntypeof(mapStateToProps);
 
+export type Props = BoundActions & typeof stateProps;
 
-@connect(state => state, bindActions(actions))
-export default class PopupFrame extends React.Component<any, any> {
-    componentDidMount() {
-        this.props.doUpdateStatus();
-    }
+class PopupFrameImpl extends React.Component<Props, {}> {
+  componentDidMount() {
+    this.props.doUpdateStatus();
+  }
 
-    render(props) {
-        if (props.initializing) {
-            return (
-                <Container fluid={true}/>
-            )
-        }
-        if (props.locked) {
-            return (
-                <Container fluid={true}>
-                    <UnlockFrame identities={props.identities}
-                                 doUpdateIdentities={props.doUpdateIdentities}
-                                 doUnlock={props.doUnlock}/>
-                </Container>
-            )
-        }
-        return (
-            <Container fluid={true}>
-                <SecretsFrame secretEntries={props.secretEntries}
-                              filterMode={props.filterMode}
-                              doUpdateSecretList={props.doUpdateSecretList}
-                              doFillLoginForm={props.doFillLoginForm}/>
-            </Container>
-        )
+  render() {
+    const { initializing, locked } = this.props;
+
+    if (initializing) {
+      return (
+        <Grid />
+      )
     }
+    if (locked) {
+      return (
+        <Grid>
+          <Row>
+            <UnlockFrame />
+          </Row>
+        </Grid>
+      )
+    }
+    return (
+      <Grid>
+        <Row>
+          <SecretsFrame />
+        </Row>
+      </Grid>
+    )
+  }
 }
+
+export const PopupFrame = connect(mapStateToProps, actionBinder)(PopupFrameImpl);

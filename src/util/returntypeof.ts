@@ -9,8 +9,8 @@
  * @returns null as RT
  */
 export function getReturnOfExpression<RT>(
-    expression: (...params: any[]) => RT): RT {
-    return null as any as RT;
+  expression: (...params: any[]) => RT): RT {
+  return null as any as RT;
 }
 
 export const returntypeof = getReturnOfExpression;

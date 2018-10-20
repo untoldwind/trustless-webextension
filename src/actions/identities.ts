@@ -1,27 +1,14 @@
-import {Identity} from "../models";
-import {Dispatch} from "redux";
-import {State} from "../reducers";
-import {createCommand, sendNativeMessage} from "./browser-messaging";
+import { Identity } from "../models";
+import { Dispatch } from "redux";
+import { State } from "../reducers";
+import { createCommand, sendNativeMessage } from "./browser-messaging";
+import { ActionCreators } from "./action-creators";
 
-export type UPDATE_IDENTITIES = 'UPDATE_IDENTITIES';
-export const UPDATE_IDENTITIES: UPDATE_IDENTITIES = 'UPDATE_IDENTITIES';
 
-export type UpdateIdentitiesAction = {
-    type: UPDATE_IDENTITIES,
-    identities: Identity[]
-}
-
-function updateIdentities(identities: Identity[]): UpdateIdentitiesAction {
-    return {
-        type: UPDATE_IDENTITIES,
-        identities: identities
-    }
-}
-
-export function doUpdateIdentities() {
-    return (dispatch: Dispatch<State>) => {
-        sendNativeMessage(createCommand('identities')).then((response: Identity[]) => {
-            dispatch(updateIdentities(response));
-        });
-    }
+export function doUpdateIdentities(dispatch: Dispatch<State>): () => void {
+  return () => {
+    sendNativeMessage(createCommand('identities')).then((response: Identity[]) => {
+      dispatch(ActionCreators.updateIdentities.create(response));
+    });
+  }
 }
